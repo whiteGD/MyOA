@@ -1,0 +1,58 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-3.2.xsd ">
+
+
+    <!--声明凭证匹配器-->
+    <bean id="credentialsMatcher" class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
+        <property name="hashAlgorithmName" value="md5"></property>
+        <property name="hashIterations" value="2"></property>
+    </bean>
+    <!--声明自定义的Realm-->
+    <bean id="userRealm" class="priv.gd.shiro.UserRealm">
+        <!--注入凭证匹配器-->
+        <property name="credentialsMatcher" ref="credentialsMatcher"></property>
+    </bean>
+
+    <!--配置SecurityManager-->
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <property name="realm" ref="userRealm"></property>
+    </bean>
+
+
+    <!--配置shiro过滤器-->
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+        <property name="securityManager" ref="securityManager"></property>
+        <!--设置未跳转的登录界面-->
+        <property name="loginUrl" value="/login.jsp"></property>
+        <!--设置认证成功页面-->
+        <!--<property name="successUrl" value="/index.jsp"></property>-->
+        <!--设置未授权的访问页面-->
+        <property name="unauthorizedUrl" value="/refuse.html"></property>
+        <!--配置过滤器链-->
+        <property name="filterChainDefinitions">
+            <value>
+                <!-- 所有的静态资源要匿名访问 -->
+                /login=anon
+                /checkcode=anon
+                /bootstrap/**=anon
+                /layui/**=anon
+                /css/**=anon
+                /js/**=anon
+                /static/**=anon
+                /findRoles=perms[baoxiao:rolelist]
+                /apply_baoxiao.jsp=perms[baoxiao:apply]
+                /myBaoxiaoBill=perms[baoxiao:billquery]
+                /myTaskList=perms[baoxiao:tasklist]
+                /add_process.jsp=perms[baoxiao:publish]
+                /processDefinitionList=perms[baoxiao:processlist]
+                /findUserList=perms[user:query]
+                /toAddRole=perms[user:create]
+                <!-- 退出系统 -->
+                /logout=logout
+                /**=authc
+            </value>
+        </property>
+    </bean>
+</beans>

@@ -1,0 +1,165 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Test</title>
+    <script type="text/javascript" language="javascript" src="jquery.js"></script>
+    <script type="text/javascript" language="javascript" >
+        function validata(){
+            if($("#username").val()==""){
+                document.write("请输入名字");
+                return false;
+            }
+            if($("#password").val()==""){
+                document.write("请输入密码");
+                return false;
+            }
+            if($("#telephone").val()==""){
+                document.write("请输入电话号码");
+            }
+            if($("#email").val()==""){
+                $("#email").val("shuangping@163.com");
+            }
+        }
+
+        function isInteger(obj){
+
+            reg=/^[-+]?d+$/;
+            if(!reg.test(obj)){
+                $("#test").html("<b>Please input correct figures</b>");
+            }else{
+                $("#test").html("");
+            }
+        }
+        function isEmail(obj){
+            reg=/^w{3,}@w+(.w+)+$/;
+            if(!reg.test(obj)){
+                $("#test").html("<b>请输入正确的邮箱地址</b>");
+            }else{
+                $("#test").html("");
+            }
+        }
+        function isString(obj){
+            reg=/^[a-z,A-Z]+$/;
+            if(!reg.test(obj)){
+                $("#test").html("<b>只能输入字符</b>");
+            }else{
+                $("#test").html("");
+            }
+        }
+        function isTelephone(obj){
+            reg=/^(d{3,4}-)?[1-9]d{6,7}$/;
+            if(!reg.test(obj)){
+                $("#test").html("<b>请输入正确的电话号码！</b>");
+            }else{
+                $("#test").html("");
+            }
+        }
+        function isMobile(obj){
+            reg=/^(+d{2,3}-)?d{11}$/;
+            if(!reg.test(obj)){
+                $("#test").html("请输入正确移动电话");
+            }else{
+                $("#test").html("");
+            }
+        }
+        function isUri(obj){
+            reg=/^http://[a-zA-Z0-9]+.[a-zA-Z0-9]+[/=?%-&_~`@[]':+!]*([^<>""])*$/;
+            if(!reg.test(obj)){
+                $("#test").html($("#uri").val()+"请输入正确的inernet地址");
+            }else{
+                $("#test").html("");
+            }
+        }
+
+        //document加载完毕执行
+        $(document).ready(function() {
+            // do something here
+
+            //隔行换色功能
+            $("p").each(function(i){
+                this.style.color=['red','green','blue','black'][i%2]
+            });
+
+            //eq(2)获取$("p")集合的第3个元素
+            $("p").eq(2).click(function(){$("#display").css("color","blue")});
+
+            //所有test中的p都附加了样式"over"。
+            $("#test>p").addClass("over");
+
+            //test中的最后一个p附加了样式"out"。
+            $("#test p:last").addClass("out");
+
+            //选择同级元素还没看懂
+            //$('#faq').find('dd').hide().end().find('dt').click(function()
+
+            //选择父级元素
+            $("a").hover(
+                function(){$(this).parents("p").addClass("out")},
+                function(){$(this).parents("p").removeClass("out")})
+
+
+            //hover鼠标悬停效果，toggle每次点击时切换要调用的函数   ,
+            //trigger(eventtype): 在每一个匹配的元素上触发某类事件,
+            //bind(eventtype,fn)，unbind(eventtype): 事件的绑定与反绑定从每一个匹配的元素中（添加）删除绑定的事件。
+
+            //方法的连写
+            $("#display").hover(function(){
+                $(this).addClass("over");
+            },function(){
+                $(this).removeClass("over");
+            })
+                .click(function(){alert($("#display").text())});
+
+
+
+
+            if($.browser.msie){//判断浏览器，若是ie则执行下面的功能
+
+                //聚焦
+                $("input[@type=text],textarea,input[@type=password]")
+                    .focus(function(){$(this).css({background:"white",border:"1px solid blue"})})
+                //也可以这样连着写,
+                //.blur(function(){$(this).css({background:"white",border:"1px solid black"})})
+
+                //失去焦点
+                //css样式可以通过addClass()来添加
+                $("input[@type=text],textarea,input[@type=password]")
+                    .blur(function(){$(this).css({background:"white",border:"1px solid black"});});
+            }
+
+        });
+
+
+
+    </script>
+    <style type="text/css">
+        .over{
+            font-size:large;
+            font-style:italic;
+        }
+        .out{
+            font-size:small;
+        }
+    </style>
+</head>
+
+<body >
+<div id="display">demo</div>
+<div id="test">
+    <p>adfa<a>dfasfa</a>sdfasdf</p>
+    <p>adfadfasfasdfasdf</p>
+    <p>adfadfasfasdfasdf</p>
+    <p>adfadfasfasdfasdf</p>
+</div>
+<form id="theForm">
+    isString<div><input type="text" id="username" onblur="isString(this.value)"/></div>
+    isInteger<div><input type="text" id="password" onblur="isInteger(this.value)"/></div>
+    isTelephone<div><input type="text" id="telephone" onblur="isTelephone(this.value)"/></div>
+    isMobile<div><input type="text" id="mobile" onblur="isMobile(this.value)"/></div>
+    isEmail<div><input type="text" id="email" onblur="isEmail(this.value)"/></div>
+    isUri<div><input type="text" id="uri" onblur="isUri(this.value)"/></div>
+    <div><input type="button" value="Validata" onblur="return validata();"   /></div>
+</form>
+</body>
+</html>
