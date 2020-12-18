@@ -18,8 +18,24 @@
     <!--配置SecurityManager-->
     <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
         <property name="realm" ref="userRealm"></property>
+        <property name="rememberMeManager" ref="cookieRememberMeManager"></property>
     </bean>
 
+    <!--cookie对象;会话Cookie模板-->
+    <bean name="rememberMeCookie" class="org.apache.shiro.web.servlet.SimpleCookie">
+        <!--设为true后，只能通过http访问，javascript无法访问-->
+        <property name="httpOnly" value="true"></property>
+        <!--设置记住我cookie生效时间30天 ,单位秒-->
+        <property name="maxAge" value="3600"></property>
+        <!--通过构造器设置cookie的名字-->
+        <constructor-arg value="rememberMeUser"></constructor-arg>
+    </bean>
+    <!--cookie管理对象;记住我功能,rememberMe管理器-->
+    <bean name="cookieRememberMeManager " class="org.apache.shiro.web.mgt.CookieRememberMeManager">
+        <property name="cookie" ref="rememberMeCookie"></property>
+        <!--rememberMe cookie加密的密钥 建议每个项目都不一样 默认AES算法 密钥长度(128 256 512 位)-->
+<!--        <property name="cipherKey" value="Base64.decode('4AvVhmFLUs0KTA3Kprsdag==')"></property>-->
+    </bean>
 
     <!--配置shiro过滤器-->
     <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">

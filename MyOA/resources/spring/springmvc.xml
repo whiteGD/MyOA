@@ -32,6 +32,14 @@
         <property name="maxUploadSize" value="104857600"></property>
         <property name="defaultEncoding" value="UTF-8"></property>
     </bean>
+    <!--配置异常页面-->
+    <bean id="exceptionResolver" class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+        <property name="exceptionMappings">
+            <props>
+                <prop key="java.lang.NullPointerException">error</prop>
+            </props>
+        </property>
+    </bean>
     <!--设置静态资源路径-->
     <mvc:resources mapping="/bootstrap/**" location="/bootstrap/"></mvc:resources>
     <mvc:resources mapping="/layui/**" location="/layui/"></mvc:resources>

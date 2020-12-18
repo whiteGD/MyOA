@@ -1,9 +1,11 @@
 package priv.gd.service;
 
 
+import org.activiti.engine.identity.User;
 import priv.gd.pojo.SysPermission;
 import priv.gd.pojo.MenuTree;
 import priv.gd.pojo.SysRole;
+import priv.gd.pojo.SysUserRole;
 
 import java.util.List;
 
@@ -92,4 +94,23 @@ public interface SysService {
      * @return
      */
     SysRole findRoleByRoleName(String roleName);
+
+    /**
+     * 通过角色id查询用户集合
+     * @param roleId
+     * @return
+     */
+    List<SysUserRole> findUserByRoleId(String roleId);
+
+    /**
+     * 通过角色id删除角色信息
+     * @param roleId
+     */
+    void deleteRole(String roleId);
+
+    /**
+     * 通过角色id删除角色对应的权限信息
+     * @param roleId
+     */
+    void deletePermissions(String roleId);
 }

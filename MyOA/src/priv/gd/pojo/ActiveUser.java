@@ -1,5 +1,6 @@
 package priv.gd.pojo;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -8,7 +9,7 @@ import java.util.List;
  * @author Thinkpad
  * 
  */
-public class ActiveUser implements java.io.Serializable {
+public class ActiveUser implements Serializable {
 	private long id;
 	private String userid;//用户id（主键）
 	private String usercode;// 用户账号

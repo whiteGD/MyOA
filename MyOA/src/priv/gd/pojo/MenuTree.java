@@ -1,8 +1,9 @@
 package priv.gd.pojo;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class MenuTree {
+public class MenuTree implements Serializable {
 
 	private int id;
 	private String name;

@@ -1,6 +1,7 @@
 package priv.gd.controller;
 
 import cn.hutool.captcha.LineCaptcha;
+import org.activiti.engine.identity.User;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.IncorrectCredentialsException;
@@ -42,8 +43,7 @@ public class UserController {
      * @return
      */
     @RequestMapping(value = "/login")
-    public String login(String username, String password, String checkcode, HttpServletRequest request, Model model){
-
+    public String login(String username, String password, String checkcode,String remember, HttpServletRequest request, Model model){
         HttpSession session = request.getSession();
         LineCaptcha lineCaptcha = (LineCaptcha) session.getAttribute("lineCaptcha");
         Subject subject = SecurityUtils.getSubject();
@@ -52,7 +52,11 @@ public class UserController {
             subject.logout();
         }
         if(lineCaptcha.verify(checkcode)){
-            AuthenticationToken token = new UsernamePasswordToken(username, password);
+            UsernamePasswordToken token = new UsernamePasswordToken(username, password);
+            if(null != remember&&remember.equals("true")){
+                System.out.println("用户点击记住我");
+                token.setRememberMe(true);
+            }
             //6.进行认证
             try {
                 subject.login(token);
@@ -194,6 +198,11 @@ public class UserController {
         Md5Hash md5Hash = new Md5Hash(user.getPassword(),"eteokues",2);
         user.setPassword(md5Hash.toString());
         user.setSalt("eteokues");
+        //判断用户上级主管是否有信息,没有默认上级主管为danny
+        System.out.println("userManager="+user.getManagerId());
+        if(null==user.getManagerId()){
+            user.setManagerId(Long.parseLong("1"));
+        }
         Map<String, String> map = new HashMap<>();
         try {
             employeeService.addUser(user);
@@ -247,6 +256,27 @@ public class UserController {
     }
 
     /**
+     * 角色列表-删除角色
+     * @param roleId
+     * @return
+     */
+    @RequestMapping("deletePermissions")
+    @ResponseBody
+    public Map<String,String> deletePermissions(String roleId){
+        //先查询现有用户是否已经使用该角色,如没有使用才可以删除角色
+        List<SysUserRole> list = sysService.findUserByRoleId(roleId);
+        Map<String,String> map = new HashMap<>();
+        if(null != list && list.size()>0){
+            map.put("msg","删除失败，该角色存在用户担任！");
+            return map;
+        }
+        sysService.deleteRole(roleId);
+        sysService.deletePermissions(roleId);
+        map.put("msg","删除成功");
+        return map;
+    }
+
+    /**
      * 角色添加-保存权限
      * @param permission
      * @return
@@ -292,4 +322,5 @@ public class UserController {
         }
         return map;
     }
+
 }

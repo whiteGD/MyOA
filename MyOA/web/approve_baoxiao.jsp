@@ -128,7 +128,9 @@
         };
         $.getJSON(url,params,function(result){
             alert(result.submitTaskMSG);
-            location.reload();
+            // location.reload();
+            //跳转待办事务页面
+            window.location.replace("myTaskList");
         });
     }
 

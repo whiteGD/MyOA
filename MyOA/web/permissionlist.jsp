@@ -51,7 +51,7 @@
 				                		<td>${role.name}</td>
 				                		<td>
 				                			<a href="#" onclick="viewPermissions('${role.id}')" class="btn btn-info btn-xs" ><span class="glyphicon glyphicon-edit"></span> 编辑</a>
-											<a href="#" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove"></span> 删除</a>
+											<a href="#" onclick="deletePermissions('${role.id}')" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove"></span> 删除</a>
 				                		</td>
 				                	</tr>
 				                </c:forEach>
@@ -101,8 +101,9 @@
 		<div class="modal-footer">
 			<button type="button" class="btn btn-success" data-dismiss="modal"
 						aria-hidden="true" onclick="updateRoleAndPermission()">保存</button>
-			<button class="btn btn-default" onclick="closePanel()">关闭</button>
+			<button type="button" class="btn btn-default" onclick="closePanel()" >关闭</button>
 		</div>
+
 		</form>
 	  </div>
 	</div>
@@ -132,10 +133,19 @@
 			}
 		});
 	}
+	function deletePermissions(role_id) {
+        if(confirm("是否确认删除？")==true){
+            var url = "deletePermissions";
+            var params = {
+                roleId:role_id,
+            };
+            $.getJSON(url,params,function(result){
+                alert(result.msg);
+                location.reload();
+            });
+        }
+    }
 
-	function closePanel() {
-		location = "findRoles";
-	}
 
 	function updateRoleAndPermission(){
 		$.ajax({
@@ -150,6 +160,10 @@
 				location.reload();
 			}
 		});
+	}
+
+	function closePanel() {
+		location = "findRoles";
 	}
 </script>
 </html>

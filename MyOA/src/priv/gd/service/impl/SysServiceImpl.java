@@ -1,5 +1,6 @@
 package priv.gd.service.impl;
 
+import org.activiti.engine.identity.User;
 import org.springframework.stereotype.Service;
 import priv.gd.mapper.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -136,5 +137,27 @@ public class SysServiceImpl implements SysService {
             return sysRoles.get(0);
         }
         return null;
+    }
+
+    @Override
+    public List<SysUserRole> findUserByRoleId(String roleId) {
+        SysUserRoleExample sysUserRoleExample = new SysUserRoleExample();
+        SysUserRoleExample.Criteria criteria = sysUserRoleExample.createCriteria();
+        criteria.andSysRoleIdEqualTo(roleId);
+        List<SysUserRole> sysUserRoles = sysUserRoleMapper.selectByExample(sysUserRoleExample);
+        return sysUserRoles;
+    }
+
+    @Override
+    public void deleteRole(String roleId) {
+        roleMapper.deleteByPrimaryKey(roleId);
+    }
+
+    @Override
+    public void deletePermissions(String roleId) {
+        SysRolePermissionExample sysRolePermissionExample = new SysRolePermissionExample();
+        SysRolePermissionExample.Criteria criteria = sysRolePermissionExample.createCriteria();
+        criteria.andSysRoleIdEqualTo(roleId);
+        rolePermissionMapper.deleteByExample(sysRolePermissionExample);
     }
 }

@@ -15,7 +15,6 @@
     <link href="bootstrap/css/bootstrap.css" rel="stylesheet">
     <link href="css/content.css" rel="stylesheet">
 
-    <link rel="stylesheet" href="/layui/css/layui.css" media="all">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -26,7 +25,6 @@
     <![endif]-->
     <script src="js/jquery.min.js"></script>
     <script src="bootstrap/js/bootstrap.min.js"></script>
-    <script src="/layui/layui.js"></script>
 </head>
 <body>
 
@@ -82,7 +80,7 @@
 				 					 		class="btn btn-success btn-xs"><span class="glyphicon glyphicon-eye-open"></span> 查看当前流程图</a>
 				 				</c:if>
 				 				<c:if test="${bill.state==2}">
-				 					<a href="leaveBillAction_delete?id=${bill.id}"
+				 					<a href="leaveBillAction_delete?id=${bill.id}" onclick="return deleteBaoxiao()"
 				 							class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove"></span> 删除</a>
 				 					<a href="${pageContext.request.contextPath }/viewHisComment?id=${bill.id}"
 				 							class="btn btn-success btn-xs"><span class="glyphicon glyphicon-eye-open"></span> 查看审核记录</a>
@@ -95,13 +93,21 @@
             </div>
         </div>
     </form>
+    <div style="width: 155px;
+        height: 50px;
+        position: absolute;
+        /*background-color: orchid;*/
+        top: 80%;
+        left: 50%;
+        margin-top: -100px;
+        margin-left: -100px;">
+        <a href="${pageContext.request.contextPath}/myBaoxiaoBill?page=1">首页</a>
+        <a href="${pageContext.request.contextPath}/myBaoxiaoBill?page=${pageNow-1}">上一页</a>
+        <a href="${pageContext.request.contextPath}/myBaoxiaoBill?page=${pageNow+1}">下一页</a>
+        <a href="${pageContext.request.contextPath}/myBaoxiaoBill?page=${pageCount}">尾页</a>
+    </div>
 </div>
-<div >
-    <a href="${pageContext.request.contextPath}/myBaoxiaoBill?page=1">首页</a>
-    <a href="${pageContext.request.contextPath}/myBaoxiaoBill?page=${pageNow-1}">上一页</a>
-    <a href="${pageContext.request.contextPath}/myBaoxiaoBill?page=${pageNow+1}">下一页</a>
-    <a href="${pageContext.request.contextPath}/myBaoxiaoBill?page=${pageCount}">尾页</a>
-</div>
+
 <table id="demo" lay-filter="test"></table>
 
 </body>
@@ -129,5 +135,13 @@
         });
 
     });
+
+    function deleteBaoxiao() {
+        if(confirm("确认删除？")==true){
+            return true;
+        }else {
+            return false;
+        }
+    }
 </script>
 </html>

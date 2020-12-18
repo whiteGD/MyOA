@@ -55,7 +55,9 @@ public class BaoxiaoBillController {
         model.addAttribute("baoxiaoList",list);
         model.addAttribute("count",total);
         model.addAttribute("pageNow",pageNum);
-        model.addAttribute("pageCount",total%pageSize==0?total%pageSize:total%pageSize+1);
+        Long pageCount = total%pageSize==0?total/pageSize:total/pageSize+1;
+        System.out.println("pageCount="+pageCount);
+        model.addAttribute("pageCount",pageCount);
         return "baoxiaobill";
     }
 
